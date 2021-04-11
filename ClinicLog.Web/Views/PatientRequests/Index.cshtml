@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ClinicLog.Web.Models.PatientRequest>
+
+@{
+    ViewData["Title"] = "Patients Requests";
+}
+
+<h1>Patients Requests</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Subscject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            @if (!User.IsInRole(Roles.Doctor))
+            {
+                <th>
+                    Doctor
+                </th>
+            }
+            @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Doctor))
+            {
+                <th>
+                    Patient
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subscject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            @if (!User.IsInRole(Roles.Doctor))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Doctor.FullName)
+                </td>
+            }
+            @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Doctor))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Patient.FullName)
+                </td>
+            }
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
